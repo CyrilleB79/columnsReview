@@ -432,6 +432,9 @@ class MozillaTable(ColumnsReview32):
 			for n in rangeFunc(0,int(level)):
 				parent = parent.simpleParent
 			return parent.simpleFirstChild
+class outlookColumnsReview32(ColumnsReview32):
+	def _getColumnHeader(self, index):
+		return self.getChild(index-1).columnHeaderText
 
 class ColumnsReview64(ColumnsReview):
 	"""for 64-bit systems (DirectUIHWND window class)
@@ -757,6 +760,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			clsList.insert(0, EmptyList)
 		if obj.windowClassName == 'MozillaWindowClass' and obj.role in [ct.ROLE_TABLEROW, ct.ROLE_TREEVIEWITEM]:
 			clsList.insert(0, MozillaTable)
+		elif obj.role == ct.ROLE_DATAITEM:
+			clsList.insert(0, outlookColumnsReview32)
 		elif obj.role == ct.ROLE_LISTITEM:
 			if obj.windowClassName == "SysListView32" or 'WindowsForms10.SysListView32.' in obj.windowClassName:
 				clsList.insert(0, ColumnsReview32)
